@@ -3,7 +3,7 @@ import time
 import sys
 
 # CONFIGURATION
-BASE_URL = "http://localhost:8000"  # Ensure your FastAPI server is running here
+BASE_URL = "http://localhost:5000"  # Ensure your FastAPI server is running here
 TARGET_ENDPOINT = f"{BASE_URL}/api/health" # We hit a simple endpoint
 
 def run_test():
