@@ -61,25 +61,114 @@ export default function AdminDepartments() {
 
     return (
         <Layout>
-            <div className="flex items-center justify-between mb-8">
-                <div><h1 className="text-2xl font-bold text-gray-900">Departments</h1><p className="text-gray-500 mt-1">Manage departments</p></div>
-                <button onClick={() => openModal()} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"><Plus size={20} />Add</button>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-10">
+                <div>
+                    <h1 className="text-3xl lg:text-4xl font-bold text-gray-900">Departments</h1>
+                    <p className="text-gray-500 mt-2 text-lg">Manage departments</p>
+                </div>
+                <button onClick={() => openModal()} className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    <Plus size={22} />
+                    Add Department
+                </button>
             </div>
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <table className="w-full">
-                    <thead className="bg-gray-50"><tr><th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Department</th><th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th><th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th><th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase">Actions</th></tr></thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {departments.map((dept) => (
-                            <tr key={dept._id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4"><div className="flex items-center gap-3"><div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><Building2 className="text-blue-600" size={20} /></div><div><p className="font-medium text-gray-900">{dept.name}</p><p className="text-sm text-gray-500">{dept.endpointBaseUrl}</p></div></div></td>
-                                <td className="px-6 py-4"><span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm font-mono">{dept.code}</span></td>
-                                <td className="px-6 py-4"><button onClick={() => toggleDepartment(dept)} className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${dept.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>{dept.isActive ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}{dept.isActive ? 'Active' : 'Disabled'}</button></td>
-                                <td className="px-6 py-4"><div className="flex items-center justify-end gap-2"><button onClick={() => openModal(dept)} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"><Pencil size={18} /></button><button onClick={() => deleteDepartment(dept)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={18} /></button></div></td>
+            {/* Mobile Card View */}
+            <div className="block md:hidden space-y-6">
+                {departments.map((dept) => (
+                    <div key={dept._id} className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-4 flex-1 min-w-0">
+                                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                    <Building2 className="text-blue-600" size={24} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-semibold text-gray-900 truncate text-lg">{dept.name}</p>
+                                    <p className="text-sm text-gray-500 truncate mt-1">{dept.endpointBaseUrl}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                            <div className="flex items-center gap-2">
+                                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-mono">{dept.code}</span>
+                                <button onClick={() => toggleDepartment(dept)} className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${dept.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                    {dept.isActive ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+                                    {dept.isActive ? 'Active' : 'Disabled'}
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <button onClick={() => openModal(dept)} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg">
+                                    <Pencil size={18} />
+                                </button>
+                                <button onClick={() => deleteDepartment(dept)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg">
+                                    <Trash2 size={18} />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {departments.length === 0 && (
+                    <div className="text-center py-12 bg-white rounded-2xl shadow-sm border border-gray-100">
+                        <Building2 className="mx-auto text-gray-300 mb-4" size={48} />
+                        <h3 className="text-lg font-medium text-gray-900">No departments</h3>
+                    </div>
+                )}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="overflow-x-auto">
+                    <table className="w-full">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Department</th>
+                                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Code</th>
+                                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-                {departments.length === 0 && <div className="text-center py-12"><Building2 className="mx-auto text-gray-300 mb-4" size={48} /><h3 className="text-lg font-medium text-gray-900">No departments</h3></div>}
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {departments.map((dept) => (
+                                <tr key={dept._id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                <Building2 className="text-blue-600" size={20} />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="font-medium text-gray-900">{dept.name}</p>
+                                                <p className="text-sm text-gray-500 truncate max-w-xs">{dept.endpointBaseUrl}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm font-mono">{dept.code}</span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <button onClick={() => toggleDepartment(dept)} className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${dept.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                            {dept.isActive ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+                                            {dept.isActive ? 'Active' : 'Disabled'}
+                                        </button>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center justify-end gap-2">
+                                            <button onClick={() => openModal(dept)} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                                                <Pencil size={18} />
+                                            </button>
+                                            <button onClick={() => deleteDepartment(dept)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {departments.length === 0 && (
+                    <div className="text-center py-12">
+                        <Building2 className="mx-auto text-gray-300 mb-4" size={48} />
+                        <h3 className="text-lg font-medium text-gray-900">No departments</h3>
+                    </div>
+                )}
             </div>
             {showModal && (
                 <div className="fixed inset-0 z-50 overflow-y-auto"><div className="flex items-center justify-center min-h-screen px-4"><div className="fixed inset-0 bg-black/50" onClick={() => setShowModal(false)} /><div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg p-6">

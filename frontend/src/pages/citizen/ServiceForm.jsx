@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { citizenAPI } from '../../lib/api';
 import Layout from '../../components/layout/Layout';
-import { ArrowLeft, Send, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Send, CheckCircle, FileText, XCircle } from 'lucide-react';
 
 export default function ServiceForm() {
     const { id } = useParams();
@@ -59,7 +59,7 @@ export default function ServiceForm() {
     };
 
     const renderField = (field) => {
-        const baseClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all";
+        const baseClasses = "w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder:text-gray-400 hover:border-gray-300";
 
         switch (field.type) {
             case 'select':
@@ -189,32 +189,43 @@ export default function ServiceForm() {
                 Back to {service.departmentId?.name}
             </Link>
 
-            <div className="max-w-2xl mx-auto">
-                {/* Service Header */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
-                    <h1 className="text-2xl font-bold text-gray-900">{service.name}</h1>
-                    <p className="text-gray-500 mt-1">{service.description}</p>
-                    <div className="mt-4 flex items-center gap-2 text-sm text-gray-500">
-                        <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full">
-                            {service.departmentId?.name}
-                        </span>
+            <div className="max-w-3xl mx-auto w-full animate-fade-in">
+                {/* Service Header with Gradient */}
+                <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 rounded-3xl p-8 lg:p-10 shadow-xl border border-blue-500/20 mb-10">
+                    <div className="flex items-start gap-6">
+                        <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg">
+                            <FileText className="text-white" size={36} />
+                        </div>
+                        <div className="flex-1">
+                            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-3">{service.name}</h1>
+                            <p className="text-blue-100 text-xl mb-5">{service.description}</p>
+                            <span className="inline-flex items-center gap-2 px-5 py-3 bg-white/20 backdrop-blur-sm text-white rounded-xl text-base font-semibold border border-white/30">
+                                {service.departmentId?.name}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                {/* Form */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <h2 className="text-lg font-semibold text-gray-900 mb-6">Application Form</h2>
+                {/* Form Card */}
+                <div className="bg-white rounded-3xl p-8 lg:p-10 shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300">
+                    <div className="flex items-center gap-4 mb-10 pb-5 border-b border-gray-100">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
+                            <FileText className="text-blue-600" size={24} />
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-900">Application Form</h2>
+                    </div>
 
                     {error && (
-                        <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
-                            {error}
+                        <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-xl text-sm animate-slide-up flex items-center gap-2">
+                            <XCircle size={18} className="flex-shrink-0" />
+                            <span>{error}</span>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {service.formSchema?.map((field) => (
-                            <div key={field.name}>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        {service.formSchema?.map((field, index) => (
+                            <div key={field.name} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2.5">
                                     {field.label}
                                     {field.required && <span className="text-red-500 ml-1">*</span>}
                                 </label>
@@ -222,11 +233,12 @@ export default function ServiceForm() {
                             </div>
                         ))}
 
-                        <button
-                            type="submit"
-                            disabled={submitting}
-                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                        >
+                        <div className="pt-6 border-t border-gray-100">
+                            <button
+                                type="submit"
+                                disabled={submitting}
+                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 px-6 rounded-xl font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
+                            >
                             {submitting ? (
                                 <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
                             ) : (
@@ -235,7 +247,8 @@ export default function ServiceForm() {
                                     Submit Request
                                 </>
                             )}
-                        </button>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

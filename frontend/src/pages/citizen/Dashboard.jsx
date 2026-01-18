@@ -41,10 +41,10 @@ export default function CitizenDashboard() {
 
     const getStatusBadge = (status) => {
         const styles = {
-            PENDING: 'bg-amber-100 text-amber-700',
-            ACCEPTED: 'bg-green-100 text-green-700',
-            REJECTED: 'bg-red-100 text-red-700',
-            PROCESSING: 'bg-blue-100 text-blue-700',
+            PENDING: 'bg-amber-50 text-amber-700',
+            ACCEPTED: 'bg-green-50 text-green-700',
+            REJECTED: 'bg-red-50 text-red-700',
+            PROCESSING: 'bg-blue-50 text-blue-700',
         };
         const icons = {
             PENDING: Clock,
@@ -54,7 +54,7 @@ export default function CitizenDashboard() {
         };
         const Icon = icons[status] || Clock;
         return (
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${styles[status] || 'bg-gray-100 text-gray-700'}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium ${styles[status] || 'bg-gray-100 text-gray-700'}`}>
                 <Icon size={12} />
                 {status}
             </span>
@@ -84,84 +84,89 @@ export default function CitizenDashboard() {
 
     return (
         <Layout>
-            {/* Welcome Header */}
+            {/* Welcome Header - Clean, professional */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">
-                    Welcome back, {user?.name?.split(' ')[0]}! 👋
+                <h1 className="text-3xl font-semibold text-gray-900 mb-2">
+                    Welcome back, {user?.name?.split(' ')[0]}
                 </h1>
-                <p className="text-gray-500 mt-1">
-                    Access government services and track your requests
+                <p className="text-gray-600 text-base">
+                    Access government services and track your requests from one place
                 </p>
             </div>
 
-            {/* Quick Stats */}
+            {/* Quick Stats - Minimal, clean cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-lg p-6 border border-gray-200">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <Building2 className="text-blue-600" size={24} />
+                        <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+                            <Building2 className="text-blue-700" size={24} />
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">{departments.length}</p>
-                            <p className="text-gray-500 text-sm">Active Departments</p>
+                            <p className="text-3xl font-semibold text-gray-900">{departments.length}</p>
+                            <p className="text-gray-600 text-sm mt-1">Active Departments</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-lg p-6 border border-gray-200">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                            <CheckCircle2 className="text-green-600" size={24} />
+                        <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+                            <CheckCircle2 className="text-green-700" size={24} />
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">
+                            <p className="text-3xl font-semibold text-gray-900">
                                 {recentRequests.filter(r => r.status === 'ACCEPTED').length}
                             </p>
-                            <p className="text-gray-500 text-sm">Approved Requests</p>
+                            <p className="text-gray-600 text-sm mt-1">Approved Requests</p>
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                <div className="bg-white rounded-lg p-6 border border-gray-200">
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                            <Clock className="text-amber-600" size={24} />
+                        <div className="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center">
+                            <Clock className="text-amber-700" size={24} />
                         </div>
                         <div>
-                            <p className="text-2xl font-bold text-gray-900">
+                            <p className="text-3xl font-semibold text-gray-900">
                                 {recentRequests.filter(r => r.status === 'PENDING').length}
                             </p>
-                            <p className="text-gray-500 text-sm">Pending Requests</p>
+                            <p className="text-gray-600 text-sm mt-1">Pending Requests</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Departments */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-semibold text-gray-900">Departments</h2>
-                        <Link to="/departments" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
-                            View All <ArrowRight size={16} />
-                        </Link>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Departments Card */}
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div className="bg-blue-50 px-6 py-4 border-b border-gray-200">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <Building2 className="text-blue-700" size={20} />
+                                Departments
+                            </h2>
+                            <Link to="/departments" className="text-blue-700 hover:text-blue-800 text-sm font-medium">
+                                View All
+                            </Link>
+                        </div>
                     </div>
                     <div className="p-6">
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             {departments.slice(0, 4).map((dept) => (
                                 <Link
                                     key={dept._id}
                                     to={`/departments/${dept._id}`}
-                                    className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all group"
+                                    className="flex items-center gap-3 p-3 bg-gray-50 hover:bg-blue-50 rounded transition-colors group"
                                 >
-                                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-2xl shadow-sm">
+                                    <div className="w-10 h-10 bg-white rounded flex items-center justify-center text-lg border border-gray-200">
                                         {getIcon(dept.icon)}
                                     </div>
-                                    <div className="flex-1">
-                                        <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-medium text-gray-900 group-hover:text-blue-700 text-sm">
                                             {dept.name}
                                         </h3>
-                                        <p className="text-sm text-gray-500 line-clamp-1">{dept.description}</p>
+                                        <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">{dept.description}</p>
                                     </div>
-                                    <ArrowRight className="text-gray-400 group-hover:text-blue-600 transition-colors" size={20} />
+                                    <ArrowRight className="text-gray-400 group-hover:text-blue-700" size={16} />
                                 </Link>
                             ))}
                             {departments.length === 0 && (
@@ -171,42 +176,47 @@ export default function CitizenDashboard() {
                     </div>
                 </div>
 
-                {/* Recent Appointments */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="flex items-center justify-between p-6 border-b border-gray-100">
-                        <h2 className="text-lg font-semibold text-gray-900">Recent Requests</h2>
-                        <Link to="/requests" className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
-                            View All <ArrowRight size={16} />
-                        </Link>
+                {/* Recent Requests Card */}
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                    <div className="bg-blue-50 px-6 py-4 border-b border-gray-200">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                                <FileText className="text-blue-700" size={20} />
+                                Recent Requests
+                            </h2>
+                            <Link to="/requests" className="text-blue-700 hover:text-blue-800 text-sm font-medium">
+                                View All
+                            </Link>
+                        </div>
                     </div>
                     <div className="p-6">
-                        <div className="space-y-4">
+                        <div className="space-y-2">
                             {recentRequests.slice(0, 5).map((request) => (
                                 <Link
                                     key={request._id}
                                     to={`/requests/${request._id}`}
-                                    className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-all"
+                                    className="flex items-center gap-3 p-3 bg-gray-50 hover:bg-blue-50 rounded transition-colors group"
                                 >
-                                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm">
+                                    <div className="w-10 h-10 bg-white rounded flex items-center justify-center text-lg border border-gray-200 flex-shrink-0">
                                         {getIcon(request.serviceId?.icon)}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-medium text-gray-900 truncate">
+                                        <h3 className="font-medium text-gray-900 group-hover:text-blue-700 text-sm truncate">
                                             {request.serviceId?.name || 'Service'}
                                         </h3>
-                                        <p className="text-xs text-gray-500 flex items-center gap-1">
-                                            <CalendarDays size={12} />
+                                        <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+                                            <CalendarDays size={11} />
                                             {new Date(request.createdAt).toLocaleDateString()}
                                         </p>
                                     </div>
-                                    {getStatusBadge(request.status)}
+                                    <div className="flex-shrink-0">{getStatusBadge(request.status)}</div>
                                 </Link>
                             ))}
                             {recentRequests.length === 0 && (
                                 <div className="text-center py-8">
-                                    <FileText className="mx-auto text-gray-300 mb-3" size={40} />
-                                    <p className="text-gray-500">No requests yet</p>
-                                    <Link to="/departments" className="text-blue-600 hover:text-blue-700 text-sm font-medium mt-2 inline-block">
+                                    <FileText className="text-gray-300 mx-auto mb-2" size={32} />
+                                    <p className="text-gray-500 text-sm">No requests yet</p>
+                                    <Link to="/departments" className="text-blue-700 hover:text-blue-800 text-sm font-medium mt-2 inline-block">
                                         Browse Services
                                     </Link>
                                 </div>

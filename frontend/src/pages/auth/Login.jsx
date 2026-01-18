@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, LogIn, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, XCircle, ShieldCheck, Activity } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { motion } from 'framer-motion';
+
+// ESLint-safe reference
+const MotionDiv = motion.div;
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -20,13 +24,11 @@ export default function Login() {
 
         try {
             const user = await login(email, password);
-
             const roleRoutes = {
                 ADMIN: '/admin/dashboard',
                 CITIZEN: '/dashboard',
                 DEPARTMENT_PERSON: '/officer/dashboard',
             };
-
             navigate(roleRoutes[user?.role] || '/dashboard');
         } catch (err) {
             setError(err?.response?.data?.message || 'Login failed. Please try again.');
@@ -36,106 +38,173 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex">
-            {/* Left Panel */}
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-12 flex-col justify-between relative overflow-hidden">
-                {/* <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23ffffff%22 fill-opacity=%220.05%22%3E%3Cpath d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" /> */}
-
-                <div className="relative z-10">
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center">
-                            <span className="text-2xl font-bold text-white">N</span>
-                        </div>
-                        <span className="text-3xl font-bold text-white">Nexus</span>
+        <div className="min-h-screen flex bg-white font-sans text-slate-900">
+            {/* LEFT PANEL — FORMAL / ODOO STYLE */}
+            <MotionDiv
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="hidden lg:flex lg:w-[50%] bg-slate-100 border-r border-slate-200 flex-col justify-between px-20 py-16"
+            >
+                {/* Header */}
+                <div>
+                    <div className="flex items-center gap-3 mb-16">
+                        {/* <div className="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-lg">N</span>
+                        </div> */}
+                        <span className="text-3xl font-bold text-slate-900">
+                            Nexus<br/><span className='text-xl font-semibold'>National Exchange for Unified Services</span>
+                        </span>
                     </div>
-                    <p className="text-blue-100 text-lg">Centralized Governance Platform</p>
+
+                    <div className="max-w-xl">
+                        <h1 className="text-4xl font-semibold text-slate-900 leading-tight mb-6">
+                            Digital Governance <br />
+                            Platform for Citizens
+                        </h1>
+
+                        <p className="text-slate-600 text-lg leading-relaxed">
+                            Nexus provides a unified and secure interface for accessing
+                            municipal services, tracking requests, and managing official
+                            interactions with transparency and efficiency.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="relative z-10 space-y-8">
-                    <h2 className="text-4xl font-bold text-white leading-tight">
-                        One Platform,<br />All Government Services
-                    </h2>
-                    <p className="text-blue-100 text-lg max-w-md">
-                        Access healthcare, agriculture, and more government services through a single, secure portal.
-                    </p>
+                {/* Features */}
+                <div className="grid grid-cols-2 gap-8 max-w-xl">
+                    <div className="flex gap-4">
+                        <ShieldCheck className="text-slate-700" size={28} />
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">
+                                Secure Access
+                            </h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                                Industry-standard authentication and data protection.
+                            </p>
+                        </div>
+                    </div>
 
                     <div className="flex gap-4">
-                        {[
-                            ['10+', 'Departments'],
-                            ['50+', 'Services'],
-                            ['24/7', 'Available'],
-                        ].map(([value, label]) => (
-                            <div key={label} className="bg-white/10 backdrop-blur rounded-lg px-4 py-3">
-                                <div className="text-2xl font-bold text-white">{value}</div>
-                                <div className="text-blue-200 text-sm">{label}</div>
-                            </div>
-                        ))}
+                        <Activity className="text-slate-700" size={28} />
+                        <div>
+                            <h3 className="font-semibold text-slate-900 mb-1">
+                                Service Transparency
+                            </h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">
+                                Track applications and requests in real time.
+                            </p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="relative z-10 text-blue-200 text-sm">
-                    © 2026 Nexus Governance Platform
-                </div>
-            </div>
+                {/* Footer */}
+                <p className="text-slate-500 text-sm">
+                    © {new Date().getFullYear()} Nexus. All rights reserved.
+                </p>
+            </MotionDiv>
 
-            {/* Right Panel - Login Form */}
-            <div className="flex-1 flex items-center justify-center p-8">
-                <div className="w-full max-w-md">
-                    <div className="bg-white rounded-2xl shadow-xl p-8">
-                        <h1 className="text-2xl font-bold text-center mb-2">Welcome Back</h1>
-                        <p className="text-gray-500 text-center mb-6">Sign in to your account</p>
+            {/* RIGHT PANEL — UNCHANGED */}
+            <div className="flex-1 flex items-center justify-center p-8 lg:p-16 bg-white relative">
+                <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                    className="w-full max-w-[500px]"
+                >
+                    <div className="mb-10">
+                        <h2 className="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
+                            Welcome Back
+                        </h2>
+                        <p className="text-slate-500 text-lg">
+                            Please enter your details to sign in.
+                        </p>
+                    </div>
 
-                        {error && (
-                            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm">
-                                {error}
-                            </div>
-                        )}
+                    {error && (
+                        <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            className="mb-8 p-5 bg-red-50 border border-red-100 text-red-700 rounded-2xl text-base font-medium flex items-center gap-3"
+                        >
+                            <XCircle size={22} />
+                            {error}
+                        </motion.div>
+                    )}
 
-                        <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="space-y-3">
+                            <label className="text-base font-bold text-slate-700 ml-1">
+                                Email Address
+                            </label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="you@example.com"
+                                className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 text-lg focus:ring-4 focus:ring-blue-500/10"
                                 required
-                                className="w-full px-4 py-3 bg-gray-50 border rounded-xl focus:ring-2 focus:ring-blue-500"
                             />
+                        </div>
 
+                        <div className="space-y-3">
+                            <label className="text-base font-bold text-slate-700">
+                                Password
+                            </label>
                             <div className="relative">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
+                                    className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 text-lg focus:ring-4 focus:ring-blue-500/10"
                                     required
-                                    className="w-full px-4 py-3 bg-gray-50 border rounded-xl pr-12 focus:ring-2 focus:ring-blue-500"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                    className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400"
                                 >
-                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                    {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
                                 </button>
                             </div>
+                            <div className="flex justify-end pt-1">
+                                <Link
+                                    to="/forgot-password"
+                                    className="text-sm font-semibold text-blue-600 hover:underline"
+                                >
+                                    Forgot Password?
+                                </Link>
+                            </div>
+                        </div>
 
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl flex justify-center gap-2 disabled:opacity-50"
+                        <motion.button
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.99 }}
+                            type="submit"
+                            disabled={loading}
+                            className="w-full bg-slate-900 hover:bg-slate-800 text-white text-lg font-bold py-5 rounded-2xl shadow-xl transition-all"
+                        >
+                            {loading ? (
+                                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                                <>
+                                    Sign In 
+                                </>
+                            )}
+                        </motion.button>
+                    </form>
+
+                    <div className="mt-10 text-center">
+                        <p className="text-slate-500 text-base">
+                            Don&apos;t have an account?{' '}
+                            <Link
+                                to="/register"
+                                className="text-blue-600 font-bold hover:text-blue-700"
                             >
-                                {loading ? 'Signing in…' : <><LogIn size={18} /> Sign In</>}
-                            </button>
-                        </form>
-
-                        <p className="text-center text-gray-500 mt-6">
-                            Don’t have an account?{' '}
-                            <Link to="/register" className="text-blue-600 font-medium">
-                                Register <ArrowRight className="inline w-4 h-4" />
+                                Create Account
                             </Link>
                         </p>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </div>
     );

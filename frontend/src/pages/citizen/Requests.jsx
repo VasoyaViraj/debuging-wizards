@@ -107,24 +107,24 @@ export default function Requests() {
                             <Link
                                 key={request._id}
                                 to={`/requests/${request._id}`}
-                                className="flex items-center gap-4 p-6 hover:bg-gray-50 transition-colors"
+                                className="flex flex-col sm:flex-row sm:items-center gap-4 p-4 sm:p-6 hover:bg-gray-50 transition-colors"
                             >
-                                <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center text-2xl">
+                                <div className="w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
                                     {getIcon(request.serviceId?.icon)}
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="font-medium text-gray-900">
+                                    <h3 className="font-medium text-gray-900 truncate">
                                         {request.serviceId?.name || 'Service'}
                                     </h3>
-                                    <div className="flex items-center gap-3 mt-1 text-sm text-gray-500">
-                                        <span>{request.departmentId?.name}</span>
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mt-1 text-sm text-gray-500">
+                                        <span className="truncate">{request.departmentId?.name}</span>
                                         <span className="flex items-center gap-1">
                                             <CalendarDays size={14} />
                                             {new Date(request.createdAt).toLocaleDateString()}
                                         </span>
                                     </div>
                                 </div>
-                                {getStatusBadge(request.status)}
+                                <div className="flex-shrink-0 sm:self-center">{getStatusBadge(request.status)}</div>
                             </Link>
                         ))}
                     </div>
